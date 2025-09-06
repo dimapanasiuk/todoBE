@@ -8,6 +8,7 @@
     "start:dev": "ts-node src/index.ts",
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
+    "build:prod": "npm install --production=false && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "init-db": "node scripts/init-production-db.js",
     "db:local": "node scripts/switch-db.js local",
@@ -24,8 +25,9 @@
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "nodemon": "^3.1.10",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "@types/node": "^24.3.0",
+    "typescript": "^5.9.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -33,9 +35,8 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^24.3.0",
     "@types/pg": "^8.11.10",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2"
   }
 }

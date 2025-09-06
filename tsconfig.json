@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "declaration": false,
     "removeComments": true,
-    "types": ["node"]
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*"
