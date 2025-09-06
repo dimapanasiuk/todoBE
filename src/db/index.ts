@@ -1,11 +1,55 @@
 const { Pool } = require('pg');
 
-const pool = new Pool({
-  user: process.env.DB_USER || 'postgres',           // пользователь PostgreSQL
-  host: process.env.DB_HOST || 'localhost',          // хост
-  database: process.env.DB_NAME || 'todo',           // имя базы
-  password: process.env.DB_PASSWORD || '0000',       // пароль
-  port: parseInt(process.env.DB_PORT || '5432'),     // порт PostgreSQL
+// Определяем режим работы
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Конфигурация для подключения к базе данных
+let dbConfig: any;
+
+// Если есть полная строка подключения, используем её
+if (process.env.DATABASE_URL) {
+  dbConfig = {
+    connectionString: process.env.DATABASE_URL,
+  };
+} else {
+  // Иначе используем отдельные параметры
+  dbConfig = {
+    user: process.env.DB_USER || 'postgres',
+    host: process.env.DB_HOST || 'localhost',
+    database: process.env.DB_NAME || 'todo',
+    password: process.env.DB_PASSWORD || '0000',
+    port: parseInt(process.env.DB_PORT || '5432'),
+  };
+}
+
+// Для продакшена добавляем SSL настройки (требуется для render.com)
+if (isProduction || process.env.DB_SSL === 'true') {
+  dbConfig.ssl = {
+    rejectUnauthorized: false // Для render.com PostgreSQL
+  };
+}
+
+const pool = new Pool(dbConfig);
+
+// Обработка ошибок подключения
+pool.on('error', (err: Error) => {
+  console.error('Unexpected error on idle client', err);
+  process.exit(-1);
 });
 
-module.exports = pool;
+// Функция для проверки подключения к базе данных
+const testConnection = async () => {
+  try {
+    const client = await pool.connect();
+    console.log('✅ Database connection successful');
+    client.release();
+  } catch (err) {
+    console.error('❌ Database connection failed:', err);
+    throw err;
+  }
+};
+
+// Тестируем подключение при запуске
+testConnection().catch(console.error);
+
+module.exports = { pool, testConnection };

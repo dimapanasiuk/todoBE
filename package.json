@@ -7,7 +7,10 @@
     "start": "ts-node src/index.ts",
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "init-db": "node scripts/init-production-db.js",
+    "db:local": "node scripts/switch-db.js local",
+    "db:remote": "node scripts/switch-db.js remote"
   },
   "keywords": [],
   "author": "",

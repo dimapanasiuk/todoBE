@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { randomUUID } from 'crypto';
 
 const express = require('express');
-const pool = require('../db');
+const { pool } = require('../db');
 
 const getQuery = require('../utils');
 

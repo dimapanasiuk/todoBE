@@ -4,7 +4,7 @@ import { UserAuthDataType } from '../types';
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const pool = require("../db");
+const { pool } = require("../db");
 require('dotenv').config();
 const getQuery = require('../utils');
 
@@ -40,8 +40,8 @@ router.post("/login", async (req: Request, res: Response) => {
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid) return res.status(400).json({ error: "Incorrect login or password" });
 
-  const accessToken = jwt.sign({ userId: user.id }, process.env.ACCESS_SECRET, { expiresIn: "15m" });
-  const refreshToken = jwt.sign({ userId: user.id }, process.env.REFRESH_SECRET, { expiresIn: "7d" });
+  const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "15m" });
+  const refreshToken = jwt.sign({ userId: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: "7d" });
 
   const refreshTokensQuery = getQuery('../db/login/create_refresh_token.sql');
   await pool.query(refreshTokensQuery, [user.id, refreshToken]);	
@@ -69,10 +69,10 @@ router.post("/token", async (req: Request, res: Response) => {
 
   if (result.rows.length === 0) return res.sendStatus(403);
 
-  jwt.verify(refreshToken, process.env.REFRESH_SECRET, (err:  Error | null, user: UserAuthDataType) => {
+  jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET, (err:  Error | null, user: UserAuthDataType) => {
     if (err) return res.sendStatus(403);
 
-    const accessToken = jwt.sign({ userId: user.userId }, process.env.ACCESS_SECRET, { expiresIn: "1m" });
+    const accessToken = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET, { expiresIn: "1m" });
     res.json({ accessToken });
   });
 });

@@ -12,7 +12,7 @@ function authMiddleware(req: Request, res: Response, next: NextFunction) {
     return res.status(401).send('Token required for access.');
   }
 
-  jwt.verify(token, process.env.ACCESS_SECRET, (err:  Error | null, user: UserAuthDataType) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err:  Error | null, user: UserAuthDataType) => {
     if (err) {
       // 2. If the token is expired, it's a 401. The frontend should refresh the token.
       if (err?.name === 'TokenExpiredError') {
