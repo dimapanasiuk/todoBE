@@ -40,9 +40,8 @@ app.get('/health', (req: Request, res: Response) => {
 app.use("/auth", authRouter);
 app.use('/todo', authMiddleware, todoRouter);
 
-app.use((err:  Error, res: Response) => {
+app.use((err: Error, req: Request, res: Response, next: any) => {
   console.error('An error has occurred:', err.stack);
-
   res.status(500).send('Internal Server Error');
 });
 
@@ -50,4 +49,7 @@ app.listen(PORT, () => {
     console.log(`🚀 Server started on port ${PORT}`);
     console.log(`📊 Environment: ${isProduction ? 'PRODUCTION' : 'DEVELOPMENT'}`);
     console.log(`🌐 CORS Origin: ${corsOptions.origin}`);
-})
+}).on('error', (err: Error) => {
+    console.error('Failed to start server:', err);
+    process.exit(1);
+});
