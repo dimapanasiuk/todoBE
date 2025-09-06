@@ -7,11 +7,9 @@ require('dotenv').config();
 const authMiddleware = require('./middleware/authMiddleware');
 const todoRouter = require('./routes/tasks');
 const authRouter = require('./routes/auth');
-// Определяем режим работы
 const isProduction = process.env.NODE_ENV === 'production';
 const PORT = process.env.PORT || 5000;
 const app = express();
-// CORS настройки в зависимости от режима
 const corsOptions = {
     origin: isProduction
         ? process.env.CORS_ORIGIN || 'https://your-frontend-domain.com'
@@ -22,7 +20,6 @@ const corsOptions = {
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors(corsOptions));
-// Health check endpoint
 app.get('/', (req, res) => {
     res.json({ message: 'Todo App Backend is running!', status: 'OK' });
 });
