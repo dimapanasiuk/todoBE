@@ -1,0 +1,13 @@
+# Dockerfile для PostgreSQL базы данных Todo App
+FROM postgres:15-alpine
+
+# Устанавливаем переменные окружения для PostgreSQL
+ENV POSTGRES_DB=todo
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=0000
+
+# Копируем скрипт инициализации базы данных
+COPY init-db.sql /docker-entrypoint-initdb.d/
+
+# Открываем порт PostgreSQL
+EXPOSE 5432

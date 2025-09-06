@@ -1,0 +1,75 @@
+{
+  "name": "Todo App Backend",
+  "version": "1.0.0",
+  "description": "Backend API для приложения управления задачами (Todo App)",
+  "type": "backend",
+  "technology": "Node.js + Express + TypeScript",
+  "database": "PostgreSQL",
+  "architecture": {
+    "pattern": "RESTful API",
+    "structure": "MVC (Model-View-Controller)",
+    "authentication": "JWT (Access + Refresh tokens)"
+  },
+  "dependencies": {
+    "core": [
+      "express",
+      "typescript",
+      "ts-node",
+      "nodemon"
+    ],
+    "database": [
+      "pg"
+    ],
+    "authentication": [
+      "jsonwebtoken",
+      "bcrypt",
+      "cookie-parser"
+    ],
+    "middleware": [
+      "cors",
+      "body-parser",
+      "dotenv"
+    ]
+  },
+  "structure": {
+    "src/": "Исходный код приложения",
+    "src/index.ts": "Точка входа приложения",
+    "src/routes/": "Маршруты API",
+    "src/middleware/": "Промежуточное ПО",
+    "src/db/": "Подключение к базе данных и SQL запросы",
+    "src/types/": "TypeScript типы",
+    "src/utils/": "Вспомогательные функции"
+  },
+  "api_endpoints": {
+    "auth": {
+      "POST /auth/register": "Регистрация пользователя",
+      "POST /auth/login": "Вход в систему",
+      "POST /auth/token": "Обновление access token",
+      "POST /auth/logout": "Выход из системы"
+    },
+    "tasks": {
+      "GET /todo": "Получить все задачи пользователя",
+      "POST /todo": "Создать новую задачу",
+      "GET /todo/:id": "Получить задачу по ID",
+      "PUT /todo/:id": "Обновить задачу",
+      "DELETE /todo/:id": "Удалить задачу"
+    }
+  },
+  "security": {
+    "authentication": "JWT токены",
+    "password_hashing": "bcrypt",
+    "cors": "Настроен для localhost:3001",
+    "cookies": "HttpOnly refresh tokens"
+  },
+  "environment": {
+    "PORT": "5000",
+    "ACCESS_SECRET": "Секретный ключ для access токенов",
+    "REFRESH_SECRET": "Секретный ключ для refresh токенов",
+    "DB_*": "Переменные подключения к PostgreSQL"
+  },
+  "scripts": {
+    "start": "Запуск в production режиме",
+    "dev": "Запуск в development режиме с hot reload",
+    "build": "Компиляция TypeScript в JavaScript"
+  }
+}
